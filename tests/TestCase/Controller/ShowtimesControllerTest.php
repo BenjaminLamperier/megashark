@@ -28,7 +28,8 @@ class ShowtimesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('showtimes');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -38,7 +39,8 @@ class ShowtimesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('showtimes/view/1');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -48,7 +50,8 @@ class ShowtimesControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('showtimes/add');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -58,7 +61,8 @@ class ShowtimesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('showtimes/edit/1');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -68,6 +72,7 @@ class ShowtimesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->delete('showtimes/delete/1');
+        $this->assertResponseSuccess();
     }
 }

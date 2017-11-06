@@ -26,7 +26,8 @@ class MoviesControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('movies');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -36,7 +37,8 @@ class MoviesControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('movies/view/1');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -46,7 +48,8 @@ class MoviesControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('movies/add');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -56,7 +59,8 @@ class MoviesControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('movies/edit/1');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -66,6 +70,7 @@ class MoviesControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->delete('movies/delete/1');
+        $this->assertResponseSuccess();
     }
 }

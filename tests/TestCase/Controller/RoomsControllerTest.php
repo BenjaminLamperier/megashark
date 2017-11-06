@@ -26,7 +26,8 @@ class RoomsControllerTest extends IntegrationTestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('rooms');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -36,7 +37,8 @@ class RoomsControllerTest extends IntegrationTestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('rooms/view/1');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -46,7 +48,8 @@ class RoomsControllerTest extends IntegrationTestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('rooms/add');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -56,7 +59,8 @@ class RoomsControllerTest extends IntegrationTestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->get('rooms/edit/1');
+        $this->assertResponseSuccess();
     }
 
     /**
@@ -66,6 +70,7 @@ class RoomsControllerTest extends IntegrationTestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->delete('rooms/delete/1');
+        $this->assertResponseSuccess();
     }
 }
