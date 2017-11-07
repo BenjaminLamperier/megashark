@@ -11,6 +11,11 @@ use Cake\TestSuite\IntegrationTestCase;
 class RoomsControllerTest extends IntegrationTestCase
 {
 
+    private static $room = [
+        'name' => 'Salle 1',
+        'capacity' => 130
+    ];
+
     /**
      * Fixtures
      *
@@ -53,6 +58,25 @@ class RoomsControllerTest extends IntegrationTestCase
         $this->assertResponseSuccess();
     }
 
+    public function testAddCheckRedirection()
+    {
+        $this->post('/rooms/add', self::$room);
+
+        $this->assertResponseSuccess();
+        $this->assertRedirect(['controller' => 'rooms', 'action' => 'index']);
+    }
+
+    public function testAddCheckDatabase()
+    {
+        $this->post('/rooms/add', self::$room);
+
+        $this->assertResponseSuccess();
+
+        $rooms = TableRegistry::get('Rooms');
+        $query = $rooms->find()->where(['name' => 'Salle 1']);
+        $this->assertEquals(1, $query->count());
+    }
+
     /**
      * Test edit method
      *
@@ -62,6 +86,27 @@ class RoomsControllerTest extends IntegrationTestCase
     {
         $this->get('rooms/edit/1');
         $this->assertResponseSuccess();
+    }
+
+    public function testEditCheckRedirectionOnSuccess()
+    {
+        $this->post('/rooms/edit/1', []);
+
+        $this->assertResponseSuccess();
+        $this->assertRedirect(['controller' => 'rooms', 'action' => 'index']);
+    }
+
+    public function testEditCheckModificationInDatabase()
+    {
+        $rooms = TableRegistry::get('Rooms');
+
+        $room = [
+            'name' => 'Salle 2'
+        ];
+        $this->post('/rooms/edit/1', $room);
+
+        $roomAfterEdit = $rooms->get(1);
+        $this->assertEquals('Salle 2', $roomAfterEdit->name);
     }
 
     /**

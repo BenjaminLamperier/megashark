@@ -11,6 +11,13 @@ use Cake\TestSuite\IntegrationTestCase;
 class ShowtimesControllerTest extends IntegrationTestCase
 {
 
+    private static $showtime = [
+        'movie_id' => 1,
+        'room_id' => 1,
+        'start' => '2017-11-06 15:00:00',
+        'end' => '2017-11-06 19:00:00',
+    ];
+
     /**
      * Fixtures
      *
@@ -55,6 +62,25 @@ class ShowtimesControllerTest extends IntegrationTestCase
         $this->assertResponseSuccess();
     }
 
+    public function testAddCheckRedirection()
+    {
+        $this->post('/showtimes/add', self::$showtime);
+
+        $this->assertResponseSuccess();
+        $this->assertRedirect(['controller' => 'showtimes', 'action' => 'index']);
+    }
+
+    public function testAddCheckDatabase()
+    {
+        $this->post('/showtimes/add', self::$showtime);
+
+        $this->assertResponseSuccess();
+
+        $showtimes = TableRegistry::get('Showtimes');
+        $query = $showtimes->find()->where(['start' => '2017-11-06 15:00:00']);
+        $this->assertEquals(1, $query->count());
+    }
+
     /**
      * Test edit method
      *
@@ -64,6 +90,27 @@ class ShowtimesControllerTest extends IntegrationTestCase
     {
         $this->get('showtimes/edit/1');
         $this->assertResponseSuccess();
+    }
+
+    public function testEditCheckRedirectionOnSuccess()
+    {
+        $this->post('/showtimes/edit/1', []);
+
+        $this->assertResponseSuccess();
+        $this->assertRedirect(['controller' => 'showtimes', 'action' => 'index']);
+    }
+
+    public function testEditCheckModificationInDatabase()
+    {
+        $showtimes = TableRegistry::get('Showtimes');
+
+        $showtime = [
+            'end' => '2017-11-06 20:00:00'
+        ];
+        $this->post('/showtimes/edit/1', $showtime);
+
+        $showtimeAfterEdit = $showtimes->get(1);
+        $this->assertEquals('2017-11-06 20:00:00', $showtimeAfterEdit->end->format('Y-m-d H:i:s'));
     }
 
     /**

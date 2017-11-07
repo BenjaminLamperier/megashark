@@ -67,11 +67,6 @@ class MoviesControllerTest extends IntegrationTestCase
         $this->assertRedirect(['controller' => 'movies', 'action' => 'index']);
     }
 
-    /**
-     * Test add method
-     *
-     * @return void
-     */
     public function testAddCheckDatabase()
     {
         $this->post('/movies/add', self::$movie);
