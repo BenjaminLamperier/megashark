@@ -2,6 +2,7 @@
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\MoviesController;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -9,6 +10,12 @@ use Cake\TestSuite\IntegrationTestCase;
  */
 class MoviesControllerTest extends IntegrationTestCase
 {
+
+    private static $movie = [
+        'name' => 'Mega Shark',
+        'description' => 'un film culte !',
+        'duration' => 120
+    ];
 
     /**
      * Fixtures
@@ -52,6 +59,30 @@ class MoviesControllerTest extends IntegrationTestCase
         $this->assertResponseSuccess();
     }
 
+    public function testAddCheckRedirection()
+    {
+        $this->post('/movies/add', self::$movie);
+
+        $this->assertResponseSuccess();
+        $this->assertRedirect(['controller' => 'movies', 'action' => 'index']);
+    }
+
+    /**
+     * Test add method
+     *
+     * @return void
+     */
+    public function testAddCheckDatabase()
+    {
+        $this->post('/movies/add', self::$movie);
+
+        $this->assertResponseSuccess();
+
+        $movies = TableRegistry::get('Movies');
+        $query = $movies->find()->where(['name' => 'Mega Shark']);
+        $this->assertEquals(1, $query->count());
+    }
+
     /**
      * Test edit method
      *
@@ -61,6 +92,27 @@ class MoviesControllerTest extends IntegrationTestCase
     {
         $this->get('movies/edit/1');
         $this->assertResponseSuccess();
+    }
+
+    public function testEditCheckRedirectionOnSuccess()
+    {
+        $this->post('/movies/edit/1', []);
+
+        $this->assertResponseSuccess();
+        $this->assertRedirect(['controller' => 'movies', 'action' => 'index']);
+    }
+
+    public function testEditCheckModificationInDatabase()
+    {
+        $movies = TableRegistry::get('Movies');
+
+        $movie = [
+            'name' => 'Titre modifié'
+        ];
+        $this->post('/movies/edit/1', $movie);
+
+        $movieAfterEdit = $movies->get(1);
+        $this->assertEquals('Titre modifié', $movieAfterEdit->name);
     }
 
     /**
